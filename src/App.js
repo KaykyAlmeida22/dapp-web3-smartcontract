@@ -7,6 +7,8 @@ function App() {
 
   const [customerId, setCustomerId] = useState("");
   const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
 
   const CONTRACT_ADRESS = "0xE9956c971B72aD74F249E616828df613F03E858b";
   
@@ -40,6 +42,11 @@ function App() {
     doSearch();
   }
 
+  function onSaveClick(){
+    setMessage("");
+    alert("Save clicked");
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -50,6 +57,16 @@ function App() {
           </label>
           <input type="button" value="Search" onClick={onSearchClick}/>
         </p>
+        <hr/>
+        <p>
+          <label>
+            Name: <input type="text" value={name} onChange={(evt) => setName(evt.target.value)}/>
+          </label> 
+          <label>
+            Age: <input type="number" value={age} onChange={(evt) => setAge(evt.target.value)}/>
+          </label>
+          <input type="button" value="Save" onClick={onSaveClick}/>
+        </p> 
         <p>
           {message}
         </p>
