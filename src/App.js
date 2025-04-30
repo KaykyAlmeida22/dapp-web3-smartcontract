@@ -11,19 +11,24 @@ function App() {
   const [age, setAge] = useState("");
 
   const CONTRACT_ADRESS = "0xE9956c971B72aD74F249E616828df613F03E858b";
-  
-  async function doSearch(){
+
+  async function getProvider(){
     if(!window.ethereum) return setMessage("Please install MetaMask");
     // Check if MetaMask is installed
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     // Request account access if needed
-
     const accounts = await provider.send("eth_requestAccounts", []);
     // Get the user's account address
     if(!accounts || !accounts.length) return setMessage("Please connect to MetaMask");
     // If the user is not connected to MetaMask, show an error message
+    return provider;
+  }
+  
+  async function doSearch(){
 
     try {
+      const provider = await getProvider();
+      // Get the provider
       const contract = new ethers.Contract(CONTRACT_ADRESS, ABI, provider);
       // Create a new contract instance
       const customer = await contract.getCustomer(customerId);
@@ -42,9 +47,34 @@ function App() {
     doSearch();
   }
 
+  async function doSave(){
+
+
+    try {
+      const provider = await getProvider();
+     // Get the provider
+     const signer = provider.getSigner();
+     // sign the transaction
+
+      const contract = new ethers.Contract(CONTRACT_ADRESS, ABI, provider);
+      // Create a new contract instance
+      const contractSigner = contract.connect(signer);
+      // Connect the contract to the signer
+
+      const tx = await contractSigner.addCustomer({name, age});
+      // Call the addCustomer function on the contract
+      setMessage(JSON.stringify(tx));
+      
+    } catch (error) {
+      setMessage("Error: " + error.message);
+      
+    }
+
+  }
+
   function onSaveClick(){
     setMessage("");
-    alert("Save clicked");
+    doSave();
   }
 
   return (
