@@ -1,6 +1,6 @@
+import { ethers } from 'ethers';
 import './App.css';
 import { useState } from 'react';
-import { ethers } from 'ethers';
 import ABI from './abi.json';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
   const CONTRACT_ADRESS = "0xE9956c971B72aD74F249E616828df613F03E858b";
   
   async function doSearch(){
-    if(window.ethereum) return setMessage("Please install MetaMask");
+    if(!window.ethereum) return setMessage("Please install MetaMask");
     // Check if MetaMask is installed
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     // Request account access if needed
@@ -37,7 +37,7 @@ function App() {
 
   function onSearchClick(){
     setMessage("");
-    console.log("Customer ID: ", customerId);
+    doSearch();
   }
 
   return (
