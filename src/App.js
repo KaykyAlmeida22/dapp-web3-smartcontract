@@ -8,7 +8,20 @@ function App() {
   const [customerId, setCustomerId] = useState("");
   const [message, setMessage] = useState("");
 
+  const CONTRACT_ADRESS = "0xE9956c971B72aD74F249E616828df613F03E858b";
   
+  async function doSearch(){
+    if(window.ethereum) return setMessage("Please install MetaMask");
+    // Check if MetaMask is installed
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // Request account access if needed
+
+    const accounts = await provider.send("eth_requestAccounts", []);
+    // Get the user's account address
+    if(!accounts || !accounts.length) return setMessage("Please connect to MetaMask");
+    // If the user is not connected to MetaMask, show an error message
+
+    
   }
 
   
